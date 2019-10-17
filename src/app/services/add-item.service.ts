@@ -29,4 +29,9 @@ export class AddItemService {
         return this._mainService.post(path, params);
     }
 
+    boughtItem(params: Object): Observable<any> {
+        const path = this.prefix_path_main + '/bought';
+        return this._mainService.post(path, params);
+    }
+
 }

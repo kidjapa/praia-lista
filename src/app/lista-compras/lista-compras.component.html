@@ -1,6 +1,6 @@
-<div class="row mt-5">
+<div class="row mt-2">
     <div class="col-md-1"></div>
-    <div class="col-md-10">
+    <div class="col-md-10 offset-md-1">
         <app-add-compra (OnIsSaved)="onItemAdd($event)"></app-add-compra>
     </div>
     <div class="col-md-1"></div>
@@ -10,7 +10,7 @@
 
     <div class="col-md-12">
 
-        <table class="table table-striped">
+        <table class="table table-striped text-center">
             <thead>
                 <tr>
                     <th>Item</th>
@@ -19,10 +19,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of items; let i = index;">
+                <tr *ngFor="let item of items; let i = index;" [ngClass]="item.bought ? 'green-line' : ''">
                     <td>{{ item.tittle }}</td>
                     <td>{{ item.qtd }}</td>
-                    <td><fa-icon [icon]="faTrash" class="pointer-cursor-icon" (click)="deleteItem(item.id)"></fa-icon></td>
+                    <td>
+                        <fa-icon [icon]="faTrash" class="pointer-cursor-icon table-icon red-icon" (click)="openConfirmModal(content, item.id)"></fa-icon>
+                        <fa-icon [icon]="faCheck" class="pointer-cursor-icon table-icon green-icon ml-5" (click)="boughtItem(item)"></fa-icon>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -30,3 +33,29 @@
     </div>
 
 </div>
+<app-loading-app [isLoading]="isLoading" [text]="loadingText"></app-loading-app>
+
+<ng-template #content let-modal>
+    <div class="modal-body">
+        <h3>Remover Item?</h3>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close(false)">Cancelar</button>
+        <button type="button" class="btn btn-light" (click)="modal.close(deleteItem())">Sim</button>
+    </div>
+</ng-template>
+
+
+<swal
+    #deletedSwal
+    title="Item Removido com sucesso!"
+    type="success"
+    [focusConfirm]="true">
+</swal>
+
+<swal
+    #attItemSwal
+    title="Item Atualizado com sucesso!"
+    type="success"
+    [focusConfirm]="true">
+</swal>

@@ -13,12 +13,20 @@ import { AddCompraComponent } from './add-compra/add-compra.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { NgxSpinnerModule } from "ngx-spinner";
+import { LoadingAppComponent } from './components/loading-app/loading-app.component';
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeAppComponent,
     ListaComprasComponent,
-    AddCompraComponent
+    AddCompraComponent,
+    LoadingAppComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +34,10 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxSpinnerModule,
+    NgbModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

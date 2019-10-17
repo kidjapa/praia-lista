@@ -1,15 +1,23 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 mb-2">
             <input type="text" name="tittle" id="tittle" class="form-control" value="" placeholder="Nome do Item"
                    [formControl]="tittle">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 mb-2">
             <input type="number" name="qtd" id="qtd" class="form-control" value="" placeholder="Quantidade"
             [formControl]="qtd">
         </div>
-        <div class="col-md-4">
-            <button class="btn btn-secondary" (click)="saveItem()">Salvar</button>
+        <div class="col-md-4 text-center">
+            <a href="#" class="btn btn-secondary"  (click)="saveItem()">Salvar</a>
         </div>
     </div>
 </div>
+<app-loading-app [isLoading]="isSaving" [text]="loadingText" ></app-loading-app>
+
+<swal
+    #warningInputsSwal
+    title="Um dos campos está incorreto!"
+    type="warning"
+    [focusConfirm]="true">
+</swal>

@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faTrash, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {AddItemService} from '../services/add-item.service';
 import {Item} from '../models/Item';
+
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
     selector: 'app-lista-compras',
@@ -12,13 +15,23 @@ import {Item} from '../models/Item';
 export class ListaComprasComponent implements OnInit {
 
     faTrash = faTrash;
+    faCheck = faCheck;
+
+    public isLoading: boolean = false;
+    public loadingText: string = "Carregando ...";
+
+    public idDeleting = 0;
 
     public items: Item[] = [];
 
-    constructor(private _items: AddItemService) {
+
+    @ViewChild('deletedSwal',{static: false}) private deleteSwal: SwalComponent;
+    @ViewChild('attItemSwal',{static: false}) private attItemSwal: SwalComponent;
+
+    constructor(private _items: AddItemService, private modalService: NgbModal) {
         _items.getItems().subscribe((results) => {
             if (results.ok) {
-                results.results.forEach((elem, i) => {
+                results.results.forEach((elem) => {
                    this.items.push(new Item({...elem}));
                 });
             }
@@ -34,15 +47,39 @@ export class ListaComprasComponent implements OnInit {
         this.items.push(new Item({...$event}));
     }
 
-    deleteItem(id: number) {
-        this._items.deleteItem({id}).subscribe((result) => {
-            console.log(result);
-            if(result.ok) {
-                alert(result.results);
-            }
-            this.items = this.items.filter((elem) => {
-                return elem.id !== id;
+    openConfirmModal(content, id: number){
+        this.modalService.open(content, { size: 'sm' });
+        this.idDeleting = id;
+    }
+
+    deleteItem() {
+        const id = this.idDeleting;
+        if(!this.isLoading){
+            this.isLoading = true;
+            this.loadingText = "Removendo item ...";
+            this._items.deleteItem({id}).subscribe((result) => {
+                if(result.ok) {
+                    this.items = this.items.filter((elem) => {
+                        return elem.id !== id;
+                    });
+                }
+                this.isLoading = false;
+                this.deleteSwal.fire();
             });
+        }
+    }
+
+    boughtItem(item: Item){
+        item.bought = !item.bought;
+        this._items.boughtItem({id: item.id, bought: item.bought}).subscribe((result) => {
+            if(result.ok) {
+                this.items.forEach((elem, i) => {
+                    if(elem.id === item.id){
+                        elem.bought = item.bought;
+                    }
+                });
+                this.attItemSwal.fire();
+            }
         });
     }
 

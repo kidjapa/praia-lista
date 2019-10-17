@@ -1,6 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {AddItemService} from '../services/add-item.service';
 import {FormControl, Validators} from '@angular/forms';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
     selector: 'app-add-compra',
@@ -13,8 +14,11 @@ export class AddCompraComponent implements OnInit {
     public qtd = new FormControl('', Validators.required);
 
     public isSaving = false;
+    public loadingText: string = "";
 
     @Output() OnIsSaved = new EventEmitter<Object>();
+
+    @ViewChild('warningInputsSwal',{static: false}) private warningInputsSwal: SwalComponent;
 
     constructor(private _addItem: AddItemService) {
     }
@@ -27,6 +31,7 @@ export class AddCompraComponent implements OnInit {
         if(!this.isSaving) {
             if (this.tittle.valid && this.qtd.valid) {
                 this.isSaving = true;
+                this.loadingText = "Salvando item ...";
                 this._addItem.addItem({
                     tittle: this.tittle.value,
                     qtd: this.qtd.value
@@ -36,7 +41,7 @@ export class AddCompraComponent implements OnInit {
                     this.resetForm();
                 });
             } else {
-                alert('Um dos campos está incorreto!');
+                this.warningInputsSwal.fire();
             }
         }
 
@@ -46,5 +51,4 @@ export class AddCompraComponent implements OnInit {
         this.tittle.setValue('');
         this.qtd.setValue('');
     }
-
 }

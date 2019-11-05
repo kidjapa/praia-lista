@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 
-import {faTrash, faCheck} from '@fortawesome/free-solid-svg-icons';
+import {faTrash, faCheck, faEdit} from '@fortawesome/free-solid-svg-icons';
 import {AddItemService} from '../services/add-item.service';
 import {Item} from '../models/Item';
 
@@ -16,6 +16,7 @@ export class ListaComprasComponent implements OnInit {
 
     faTrash = faTrash;
     faCheck = faCheck;
+    faEdit  = faEdit;
 
     public isLoading: boolean = false;
     public loadingText: string = "Carregando ...";
@@ -24,27 +25,41 @@ export class ListaComprasComponent implements OnInit {
 
     public items: Item[] = [];
 
+    public edit: boolean = false;
+
+    public _title: string = "";
+    public _qtd: number = -1;
+    public _id: number = -1;
 
     @ViewChild('deletedSwal',{static: false}) private deleteSwal: SwalComponent;
     @ViewChild('attItemSwal',{static: false}) private attItemSwal: SwalComponent;
 
     constructor(private _items: AddItemService, private modalService: NgbModal) {
-        _items.getItems().subscribe((results) => {
-            if (results.ok) {
-                results.results.forEach((elem) => {
-                   this.items.push(new Item({...elem}));
-                });
-            }
-        });
-
+        this.loadItens();
     }
 
     ngOnInit() {
     }
 
+    public loadItens(){
+        this.items = [];
+        this._items.getItems().subscribe((results) => {
+            if (results.ok) {
+                results.results.forEach((elem) => {
+                    this.items.push(new Item({...elem}));
+                });
+            }
+        });
+    }
+
 
     public onItemAdd($event) {
-        this.items.push(new Item({...$event}));
+        if(!this.edit){
+            this.items.push(new Item({...$event}));
+        }else{
+            this.loadItens();
+            this.edit = false;
+        }
     }
 
     openConfirmModal(content, id: number){
@@ -81,6 +96,17 @@ export class ListaComprasComponent implements OnInit {
                 this.attItemSwal.fire();
             }
         });
+    }
+
+    /**
+     * Load item to edit
+     * @param item Item Id for load items attributes
+     */
+    editItem(item: Item){
+        this._qtd = item.qtd;
+        this._id = item.id;
+        this._title = item.tittle;
+        this.edit = true;
     }
 
 }

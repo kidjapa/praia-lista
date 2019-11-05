@@ -1,7 +1,7 @@
 <div class="row mt-2">
     <div class="col-md-1"></div>
     <div class="col-md-10 offset-md-1">
-        <app-add-compra (OnIsSaved)="onItemAdd($event)"></app-add-compra>
+        <app-add-compra (OnIsSaved)="onItemAdd($event)" [_title]="_title" [_id]="_id" [_qtd]="_qtd"></app-add-compra>
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -24,6 +24,7 @@
                     <td>{{ item.qtd }}</td>
                     <td>
                         <fa-icon [icon]="faTrash" class="pointer-cursor-icon table-icon red-icon" (click)="openConfirmModal(content, item.id)"></fa-icon>
+                        <fa-icon [icon]="faEdit" class="pointer-cursor-icon table-icon gray-icon ml-5" (click)="editItem(item)"></fa-icon>
                         <fa-icon [icon]="faCheck" class="pointer-cursor-icon table-icon green-icon ml-5" (click)="boughtItem(item)"></fa-icon>
                     </td>
                 </tr>

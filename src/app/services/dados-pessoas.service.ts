@@ -21,4 +21,9 @@ export class DadosPessoasService {
         const path = this.prefix_path_main + '/setdaypeople';
         return this._mainService.post(path,{'people_id': pessoa_id, 'date': day, 'checked': checked});
     }
+
+    getDefaultValues(){
+        const path = this.prefix_path_main + '/getDefaultValues';
+        return this._mainService.get(path);
+    }
 }

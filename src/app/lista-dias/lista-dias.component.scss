@@ -1,0 +1,89 @@
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+}
+.custom-day.focused {
+    background-color: #e6e6e6;
+}
+.custom-day.range, .custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+}
+.custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+}
+
+
+.show-configuration{
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #0000003b;
+    padding: 10px;
+    font-weight: 600;
+
+    &.no-cursor{
+        cursor: default;
+    }
+
+    input:disabled{
+        cursor: not-allowed;
+    }
+}
+
+.table-border-header{
+    border-left: 1px solid #0000003d;
+    border-right: 1px solid #0000003d;
+}
+
+.check-box-list-chart {
+    display: inline-block;
+    position: relative;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    .checkmark {
+        display: block;
+        float: left;
+        height: 15px;
+        width: 15px;
+        border-radius: 3px;
+        margin-right: 10px;
+        border: 1px solid #d6d3d3;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    &:hover input ~ .checkmark {
+        background-color: rgb(59, 148, 59);
+    }
+
+    input:checked ~ .checkmark {
+        background-color: rgb(102, 231, 111);
+    }
+
+}

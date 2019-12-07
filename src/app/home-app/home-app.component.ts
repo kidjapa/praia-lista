@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-home-app',
-  templateUrl: './home-app.component.html',
-  styleUrls: ['./home-app.component.scss']
+    selector: 'app-home-app',
+    templateUrl: './home-app.component.html',
+    styleUrls: ['./home-app.component.scss']
 })
 export class HomeAppComponent implements OnInit {
 
-  constructor() { }
+    public tabActive: string = 'lista_dias';
 
-  ngOnInit() {
-  }
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
+
+    public selectTab(tab: string) {
+        if(tab !== ""){
+            this.tabActive = tab;
+        }
+    }
 
 }

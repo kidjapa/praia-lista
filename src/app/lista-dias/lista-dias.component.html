@@ -1,0 +1,100 @@
+<div *ngIf="dataIsLoaded && data !== undefined">
+    <div class="row text-center">
+        <div class="col-md-12 show-configuration" (click)="show_configuration = !show_configuration">
+            <span>Abrir configurações</span>
+            <fa-icon [icon]="faChevronRight" class="pointer-cursor-icon table-icon gray-icon ml-5"
+                     *ngIf="!show_configuration"></fa-icon>
+            <fa-icon [icon]="faChevronLeft" class="pointer-cursor-icon table-icon gray-icon ml-5"
+                     *ngIf="show_configuration"></fa-icon>
+        </div>
+    </div>
+    <div class="row show-configuration no-cursor" *ngIf="show_configuration">
+
+        <div class="col-md-6 text-center">
+
+            <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                            outsideDays="hidden">
+            </ngb-datepicker>
+
+            <ng-template #t let-date let-focused="focused">
+            <span class="custom-day"
+                  [class.focused]="focused"
+                  [class.range]="calendarIsRange(date)"
+                  [class.faded]="calendarIsHovered(date) || calendarIsInside(date)"
+                  (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null">
+                {{ date.day }}
+            </span>
+            </ng-template>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="qtd_dias">Qtd. Dias: </label>
+                    <input type="number" class="form-control" id="qtd_dias" step="1"
+                           value="{{data.default_values.qty_days}}" placeholder="Quantidade de dias" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="valor_diaria">Valor diária: </label>
+                    <input type="text" class="form-control" id="valor_diaria"
+                           value="{{data.default_values.daily_value}}"
+                           placeholder="Valor da diária" mask="separator.2" thousandSeparator="." disabled/>
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <label for="qtd_pessoas">Qtd. Pessoas: </label>
+                    <input type="number" class="form-control" id="qtd_pessoas" step="1"
+                           value="{{data.peoples.length}}" placeholder="Quantidade de pessoas" disabled>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mt-5" *ngIf="data !== undefined">
+        <div class="col-md-12">
+            <table class="table table-hover table-striped" style="font-size: 13px;">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th [colSpan]="data.getArrayDays().length" class="text-center table-border-header">
+                        Valores
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th *ngFor="let mDate of data.getArrayDays()">
+                        R$ {{ data.getCostDay(mDate.date()) }}
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th *ngFor="let i of data.getArrayDays()">
+                        {{i.date()}}/{{ i.month() + 1 }}
+                    </th>
+                    <th>Valor total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let people of data.peoples; let ind = index">
+                    <td>{{ people.nome }}</td>
+                    <td *ngFor="let mDate of data.getArrayDays()">
+                        <label class="check-box-list-chart">
+                            <input type="checkbox" (change)="checkBoxChange(ind, mDate)"
+                                   [checked]="people.verifyDay(mDate.date()) !== -1 ? people.days[people.verifyDay(mDate.date())].checked : false">
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>R$ {{ getTotalCostPeople(people) }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

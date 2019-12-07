@@ -2,13 +2,35 @@
 
     <div class="row mt-5">
         <div class="col-md-12 text-center">
-            <h4>Lista de Compras - Praia - 2019</h4>
+            <h4>Praia - 2019</h4>
         </div>
     </div>
 
-    <div class="row mt-5">
+
+    <div class="row mt-2">
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="#" [ngClass]="tabActive === 'lista_itens' ? 'active' : ''"  (click)="selectTab('lista_itens')">Lista de Compras</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [ngClass]="tabActive === 'lista_dias' ? 'active' : ''" (click)="selectTab('lista_dias')" >Valores Dias</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- TAB Lista compras -->
+    <div class="row mt-2" *ngIf="tabActive==='lista_itens'">
         <div class="col-md-12">
             <app-lista-compras></app-lista-compras>
+        </div>
+    </div>
+
+    <!-- TAB Valores Dias -->
+    <div class="row mt-2" *ngIf="tabActive==='lista_dias'">
+        <div class="col-md-12">
+            <app-lista-dias></app-lista-dias>
         </div>
     </div>
 

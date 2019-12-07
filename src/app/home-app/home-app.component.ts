@@ -9,8 +9,7 @@ import {DefaultValues} from '../models/DefaultValues';
 })
 export class HomeAppComponent implements OnInit {
 
-    public tabActive: string = 'lista_dias';
-
+    public tabActive: string = 'lista_itens';
     public TIPOS_DASHBOARD = {
         0: 'lista_itens',
         1: 'lista_dias'
